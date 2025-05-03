@@ -1,0 +1,50 @@
+# parameters for preliminary analysis.
+# author: Shuo Li
+# date: 2023/05/30
+
+UBFC-rPPG:  # UBFC-rPPG dataset. 
+  url: https://sites.google.com/view/ybenezeth/ubfcrppg
+  dir_dataset: 'E:/dataset/UBFC-rPPG'  # directory of the dataset.
+  len_window: 6  # window length in seconds.
+  stride_window: 1  # window stride in seconds.
+  fps: 30  # default frames per second.
+  # face detection and segmentation params.
+  max_num_faces: 1  # number of target faces.
+  minDetectionCon: 2.0e-1  # detection confidence
+  minTrackingCon: 5.0e-1  # tracking confidence
+  list_roi_num: [[151, 108, 107, 55, 8, 285, 336, 337]]
+                # the list containing sequence numbers of selected keypoints of different ROIs. size = [num_roi].
+  list_roi_name: ['glabella']
+                 # the list containing names of different ROIs. size = [num_roi].
+
+
+LGI-PPGI:  # LGI-PPGI dataset.
+  url: https://github.com/partofthestars/LGI-PPGI-DB
+  dir_dataset: 'E:/dataset/LGI-PPGI'  # directory of the dataset.
+  len_window: 6  # window length in seconds.
+  stride_window: 1  # window stride in seconds.
+  fps: 25  # default frames per second.
+  # face detection and segmentation params.
+  max_num_faces: 1  # number of target faces.
+  minDetectionCon: 3.5e-1  # detection confidence
+  minTrackingCon: 3.5e-1  # tracking confidence
+  list_roi_num: [[151, 108, 107, 55, 8, 285, 336, 337]]
+                # the list containing sequence numbers of selected keypoints of different ROIs. size = [num_roi].
+  list_roi_name: ['glabella']
+                 # the list containing names of different ROIs. size = [num_roi].
+
+
+BUAA-MIHR:  # BUAA-MIHR dataset.
+  url: https://github.com/xilin1991/Large-scale-Multi-illumination-HR-Database
+  dir_dataset: 'E:/dataset/BUAA-MIHR'  # directory of the dataset.
+  len_window: 6  # window length in seconds.
+  stride_window: 1  # window stride in seconds.
+  fps: 30  # default frames per second.
+  # face detection and segmentation params.
+  max_num_faces: 1  # number of target faces.
+  minDetectionCon: 3.5e-1  # detection confidence
+  minTrackingCon: 3.5e-1  # tracking confidence
+  list_roi_num: [[151, 108, 107, 55, 8, 285, 336, 337]]
+                # the list containing sequence numbers of selected keypoints of different ROIs. size = [num_roi].
+  list_roi_name: ['glabella']
+                 # the list containing names of different ROIs. size = [num_roi].
