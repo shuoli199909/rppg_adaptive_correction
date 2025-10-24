@@ -1,4 +1,4 @@
-# Robust rPPG Pipeline with Motion-Tolerant Correction (AMTC) and RF-based Gating (HMA_RF)
+# Adaptive Physiologically Constrained Signal Correction Improves Contactless Heart Rate Monitoring
 
 > A concise, high-level description of the project. This repository implements a robust remote photoplethysmography (rPPG) pipeline that converts videos into heart-rate (HR) trajectories and includes motion-aware post-processing designed for challenging, real-world settings. Two new components—**AMTC** and **HMA_RF**—are integrated alongside the baseline **FactorizePhys** implementation to provide strong performance under motion and illumination variability.
 
