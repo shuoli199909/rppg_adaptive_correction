@@ -1,4 +1,4 @@
-# Adaptive Physiologically Constrained Signal Correction Improves Contactless Heart Rate Monitoring
+# Adaptive physiology-informed correction for reliable remote photoplethysmography heart-rate monitoring
 
 > A concise, high-level description of the project. This repository implements a robust remote photoplethysmography (rPPG) pipeline that converts videos into heart-rate (HR) trajectories and includes motion-aware post-processing designed for challenging, real-world settings. Two new components—**AMTC** and **HMA_RF**—are integrated alongside the baseline **FactorizePhys** implementation to provide strong performance under motion and illumination variability.
 
@@ -22,7 +22,7 @@
   A Random‑Forest–based (HMRF‑ready) confidence gate that classifies each window as **trustworthy** or **untrustworthy** using features such as displacement statistics, band energy, and BVP SNR. Untrustworthy windows are corrected via nearest‑valid temporal imputation, reducing large transient errors.
 
 - **FactorizePhys (`FactorizePhys/`)**  
-  A reproducible baseline implementation added for apples‑to‑apples comparison with the same data flow and evaluation metrics.
+  A reproducible AI implementation added for apples‑to‑apples comparison with the same data flow and evaluation metrics.
 
 ---
 
@@ -41,7 +41,7 @@
 │   ├── moving_average.py
 │   ├── outlier_detection.py
 │   └── peak_verification.py
-├── FactorizePhys/              # Baseline method for comparison
+├── FactorizePhys/              # Sota AI method for comparison
 ├── main/                       # Entry points for each pipeline stage
 │   ├── main_vid2rgb.py         # Video → ROI RGB
 │   ├── main_rgb2bvpwin.py      # RGB → BVP windows
