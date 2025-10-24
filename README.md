@@ -1,108 +1,87 @@
-# Adaptive Physiologically Constrained Signal Correction Improves Contactless Heart Rate Monitoring
+# Robust rPPG Pipeline with Motion-Tolerant Correction (AMTC) and RF-based Gating (HMA_RF)
 
+> A concise, high-level description of the project. This repository implements a robust remote photoplethysmography (rPPG) pipeline that converts videos into heart-rate (HR) trajectories and includes motion-aware post-processing designed for challenging, real-world settings. Two new components—**AMTC** and **HMA_RF**—are integrated alongside the baseline **FactorizePhys** implementation to provide strong performance under motion and illumination variability.
 
 ---
 
-## 🔧 Project Structure
+## Key Ideas
+
+- **End-to-end rPPG flow**: video → face/ROI RGB → BVP windowing → HR estimation → post-processing → evaluation.
+- **Motion-tolerant post-processing**: mitigate motion artifacts and temporal spikes without over-smoothing physiologic dynamics.
+- **Modular design**: plug-and-play filters and gates under `filters/`, interoperable with the existing pipeline and with FactorizePhys as a baseline reference.
+- **Practical robustness**: emphasize stability in medium/high-motion segments, illumination changes, and imperfect face tracking.
+
+---
+
+## What's New
+
+- **AMTC (`filters/AMTC.py`)**  
+  Adaptive Motion‑Tolerant Correction that adjusts smoothing strength and state-space parameters based on displacement statistics and band-limited motion energy. The goal is to suppress motion‑induced HR spikes while preserving valid cardiac variability.
+
+- **HMA_RF (`filters/HMA_RF.py`)**  
+  A Random‑Forest–based (HMRF‑ready) confidence gate that classifies each window as **trustworthy** or **untrustworthy** using features such as displacement statistics, band energy, and BVP SNR. Untrustworthy windows are corrected via nearest‑valid temporal imputation, reducing large transient errors.
+
+- **FactorizePhys (`FactorizePhys/`)**  
+  A reproducible baseline implementation added for apples‑to‑apples comparison with the same data flow and evaluation metrics.
+
+---
+
+## Repository Structure
 
 ```
-rppg_adaptive_correction/
-│
-├── arduino/                   # Arduino test for different methods
-│   └── anduino_test.ino
-│
-├── config/                    # Configuration files
-├── data/                      # Raw and processed input data
-│
-├── filters/                   # Filtering & signal processing utilities
+.
+├── arduino/                    # Hardware-side sketches (optional benchmarks)
+├── config/                     # Config files
+├── data/                       # Raw and intermediate data (ignored in VCS)
+├── filters/                    # Filters and artifact-handling modules
+│   ├── AMTC.py                 # Adaptive Motion-Tolerant Correction
+│   ├── HMA_RF.py               # RF/HMRF confidence gating + nearest-neighbor fill
 │   ├── index_filter.py
 │   ├── kalman_filter.py
 │   ├── moving_average.py
 │   ├── outlier_detection.py
 │   └── peak_verification.py
-│
-├── main/                      # Entry points for various processing stages
-│   ├── main_bvpwin2HR.py
-│   ├── main_gen_gtHR.py
-│   ├── main_rgb2bvpwin.py
-│   └── main_vid2rgb.py
-│
-├── processor/                 # HR post processing & index process
+├── FactorizePhys/              # Baseline method for comparison
+├── main/                       # Entry points for each pipeline stage
+│   ├── main_vid2rgb.py         # Video → ROI RGB
+│   ├── main_rgb2bvpwin.py      # RGB → BVP windows
+│   ├── main_bvpwin2HR.py       # BVP windows → HR + post-processing
+│   └── main_gen_gtHR.py        # Ground-truth HR preparation
+├── processor/                  # Post-processing orchestration & indices
 │   ├── index_processor.py
 │   └── post_processor.py
-│
-├── result/                    # Output data and evaluation results
-├── util/                      # Utility functions
-│
-├── .gitignore
+├── result/                     # Outputs & evaluation artifacts
+├── util/                       # Utilities
 ├── LICENSE
 └── README.md
 ```
 
 ---
 
+## Goals & Positioning
 
-🧠 Key Features
-- 💡 Multiple rPPG Algorithms: Supports initial heart rate estimation using various rPPG methods, enabling flexible input signal processing.
-- 📊 Post-Processing Comparison: Evaluates and compares the accuracy of different heart rate post-processing algorithms (e.g., Kalman Filter, Moving Average, Index Filter).
-- 🔌 Arduino Deployment Benchmarking: Analyzes the computational performance of post-processing methods when deployed on Arduino, helping assess real-time feasibility on edge devices.
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Python 3.8+
-- Install dependencies:
-  ```bash
-  pip install -r requirements.txt
-  ```
-
-### Running the Pipeline
-
-1. **Extract RGB Traces from Video**:
-   ```bash
-   python main/main_vid2rgb.py
-   ```
-
-2. **Convert RGB to BVP Window**:
-   ```bash
-   python main/main_rgb2bvpwin.py
-   ```
-
-3. **Estimate Heart Rate**:
-   ```bash
-   python main/main_bvpwin2HR.py
-   ```
-
-4. *(Optional)* Generate Ground Truth HR for Comparison:
-   ```bash
-   python main/main_gen_gtHR.py
-   ```
+- **Scientific**: Provide a clean reference for studying how motion-aware post‑processing improves rPPG accuracy beyond algorithmic baselines.
+- **Engineering**: Offer a realistic, modular pipeline that can be adapted to embedded or mobile use cases.
+- **Reproducibility**: Keep components decoupled, with clear I/O conventions across pipeline stages, so experiments are easy to replicate and extend.
 
 ---
 
-## 📊 Results
 
-Results will be saved in the `result/` directory. The processed HR estimations can be visualized and compared against ground truth values for accuracy evaluation.
+## Ethics & Responsible Use
 
----
-
-## 🤝 Contributing
-
-We welcome pull requests and improvements from the community. Please ensure your code is well-commented and tested.
+rPPG signals are biometric/health‑adjacent. When using this code or derived models:
+- Obtain informed consent and follow local regulations.
+- Avoid re‑identification and secondary use beyond the original consent.
+- Safeguard data and models to prevent misuse.
 
 ---
 
-## 📄 License
+## License
 
-This project is licensed under the MIT License. See `LICENSE` for details.
-
----
-
-## ✨ Acknowledgments
-
-Thanks to all contributors and the open-source community that inspired this work.
+This project is released under the MIT License (see `LICENSE`).
 
 ---
+
+## Acknowledgments
+
+We thank the open‑source rPPG community and prior methods for inspiration and baselines. FactorizePhys is included to support transparent, controlled comparisons.
